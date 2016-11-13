@@ -1,5 +1,6 @@
 package com.example.amank.lifeconnect;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -64,10 +65,14 @@ public class LoginActivity extends AppCompatActivity {
     public void login() {
         Log.d(TAG, "Login");
 
-        if (!validate()) {
-            onLoginFailed();
-            return;
-        }
+//        if (!validate()) {
+//            onLoginFailed();
+//            return;
+//        }
+
+        Intent intent = new Intent(this, Patient_Dashboard.class);
+        startActivity(intent);
+
 
         _loginButton.setEnabled(false);
 
