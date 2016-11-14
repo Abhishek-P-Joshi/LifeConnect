@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 //            return;
 //        }
 
-        Intent intent = new Intent(this, Patient_Dashboard.class);
+        Intent intent = new Intent(this, DemoInsert.class);
         startActivity(intent);
 
 
