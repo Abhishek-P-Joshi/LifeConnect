@@ -23,6 +23,14 @@
         <activity
             android:name=".Patient_Dashboard"
             android:label="@string/title_activity_patient__dashboard"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DemoInsert"
+            android:label="@string/title_activity_demo_insert"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DemoGet"
+            android:label="@string/title_activity_demo_get"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
