@@ -36,9 +36,9 @@ public class SensorHandler extends Service implements SensorEventListener, Locat
     Timer timer;
     private SensorManager accelManage;
     private Sensor senseAccel;
-    float accelValuesX[] = new float[128];
-    float accelValuesY[] = new float[128];
-    float accelValuesZ[] = new float[128];
+    float accelValuesX[] = new float[10];
+    float accelValuesY[] = new float[10];
+    float accelValuesZ[] = new float[10];
     int index = 0;
     private static final int GPS_TIME_INTERVAL = 2000; // get gps location every 2 seconds
     private static final int GPS_DISTANCE= 1; // set the distance value in meter
@@ -46,12 +46,24 @@ public class SensorHandler extends Service implements SensorEventListener, Locat
     public void onSensorChanged(SensorEvent sensorEvent) {
         // TODO Auto-generated method stub
         Sensor mySensor = sensorEvent.sensor;
-
         if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            if(index<10) {
+                index++;
+            }
+            else
+            {
+                index = 0;
+                float sum = 0;
+                for(int i=0;i<10;i++)
+                {
+                    sum = sum + Math.abs(accelValuesX[i]) + Math.abs(accelValuesY[i]) + Math.abs(accelValuesZ[i]);
+                }
+                if(sum<140) timerTask.updateWalkOrRun(true);
+                else timerTask.updateWalkOrRun(false);
+            }
             accelValuesX[index] = sensorEvent.values[0];
             accelValuesY[index] = sensorEvent.values[1];
             accelValuesZ[index] = sensorEvent.values[2];
-            //index++;
             accelManage.unregisterListener(this);
             //accelManage.registerListener(this, senseAccel, SensorManager.SENSOR_DELAY_NORMAL);
         }
@@ -73,7 +85,7 @@ public class SensorHandler extends Service implements SensorEventListener, Locat
         String latitude = "Latitude: " + loc.getLatitude();
         current = new Location("current");
         current.set(loc);
-        timerTask.update(current);
+        timerTask.updateLocation(current);
     }
 
     @Override
@@ -121,12 +133,14 @@ public class SensorHandler extends Service implements SensorEventListener, Locat
         Location current;
         Location previous;
         boolean first;
+        boolean walkOrRun;
         public MyTimerTask() {
             previous = new Location("previous");
             current = new Location("current");
             first =true;
+            walkOrRun = false;
         }
-        public void update(Location loc)
+        public void updateLocation(Location loc)
         {
             if(first){
                 previous.set(loc);
@@ -135,12 +149,21 @@ public class SensorHandler extends Service implements SensorEventListener, Locat
             current.set(loc);
         }
 
+        public void updateWalkOrRun(boolean b)
+        {
+            walkOrRun = b;
+        }
+
         @Override
         public void run() {
             double distance = current.distanceTo(previous);
             String info = "current loc:"+ current.getLatitude()+"\nprevious loc:"+previous.getLatitude()+"\ndistance moved:"+distance;
             previous.set(current);
             Log.d(TAG, info);
+            if(walkOrRun && distance < 120)
+            {
+                //insert into database
+            }
         }
     }
     class SensorTask extends TimerTask
