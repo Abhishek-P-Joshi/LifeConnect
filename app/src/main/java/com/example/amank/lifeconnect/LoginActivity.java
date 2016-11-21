@@ -1,5 +1,6 @@
 package com.example.amank.lifeconnect;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v4.app.ActivityCompat;
+import android.Manifest;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -35,10 +38,18 @@ public class LoginActivity extends AppCompatActivity {
 //        setSupportActionBar(toolbar);
 
         ButterKnife.inject(this);
+        ActivityCompat.requestPermissions(this, new String[] {
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION },1);
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent startSenseService = new Intent(LoginActivity.this, SensorHandler.class);
+                Bundle b = new Bundle();
+                b.putString("name", "name");
+                startSenseService.putExtras(b);
+                startService(startSenseService);
                 login();
             }
         });
@@ -64,10 +75,14 @@ public class LoginActivity extends AppCompatActivity {
     public void login() {
         Log.d(TAG, "Login");
 
-        if (!validate()) {
-            onLoginFailed();
-            return;
-        }
+//        if (!validate()) {
+//            onLoginFailed();
+//            return;
+//        }
+
+        Intent intent = new Intent(this, DemoInsert.class);
+        startActivity(intent);
+
 
         _loginButton.setEnabled(false);
 
