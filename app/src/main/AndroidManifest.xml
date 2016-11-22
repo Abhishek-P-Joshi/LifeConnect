@@ -33,6 +33,10 @@
             android:name=".DemoGet"
             android:label="@string/title_activity_demo_get"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Appointment_Calendar"
+            android:label="Appointment_Calendar"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <service android:enabled="true" android:name=".SensorHandler" />
     </application>
 
