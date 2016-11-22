@@ -109,8 +109,20 @@ public class LoginActivity extends AppCompatActivity {
                 values = jsonObj.getJSONArray(TAG_RESULTS);
                 if(values.length()>0)
                 {
+                    Intent startSenseService = new Intent(LoginActivity.this, SensorHandler.class);
+                    Bundle b = new Bundle();
+                    b.putString("name", parseName(username));
+                    startSenseService.putExtras(b);
+                    startService(startSenseService);
                     //flag = true;
+                    //Intent intent = new Intent(this, DemoInsert.class);
+                    //startActivity(intent);
                     Intent intent = new Intent(this, Patient_Dashboard.class);
+                    Bundle bu = new Bundle();
+                    bu.putString("name", parseName(username));
+                    intent.putExtras(bu);
+                    //flag = true;
+                    //Intent intent = new Intent(this, Patient_Dashboard.class);
                     startActivity(intent);
                 }else{
                     Toast.makeText(getBaseContext(),"Please Enter Proper Credentials!",Toast.LENGTH_SHORT).show();
@@ -172,8 +184,8 @@ public class LoginActivity extends AppCompatActivity {
             _emailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
+        if (password.isEmpty() || password.length() < 4 || password.length() > 12) {
+            _passwordText.setError("between 4 and 12 alphanumeric characters");
             valid = false;
         } else {
             _passwordText.setError(null);
