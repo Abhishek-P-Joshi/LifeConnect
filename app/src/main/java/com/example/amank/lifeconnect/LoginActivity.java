@@ -77,7 +77,12 @@ public class LoginActivity extends AppCompatActivity {
                 startSenseService.putExtras(b);
                 startService(startSenseService);
                 //flag = true;
-                Intent intent = new Intent(this, DemoInsert.class);
+                //Intent intent = new Intent(this, DemoInsert.class);
+                //startActivity(intent);
+                Intent intent = new Intent(this, Patient_Dashboard.class);
+                Bundle bu = new Bundle();
+                bu.putString("name", username);
+                intent.putExtras(bu);
                 startActivity(intent);
             }else{
                 Toast.makeText(getBaseContext(),"Please Enter Proper Credentials!",Toast.LENGTH_SHORT).show();
