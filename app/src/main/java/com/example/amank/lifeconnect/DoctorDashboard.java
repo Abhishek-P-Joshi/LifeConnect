@@ -4,6 +4,7 @@ package com.example.amank.lifeconnect;
  * Created by Yogesh on 11/13/2016.
  */
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -25,12 +26,17 @@ import java.util.ArrayList;
 
 public class DoctorDashboard extends AppCompatActivity
 {
+    private String strPatient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.doctor_dashboard);
         /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
+
+        Intent intent = getIntent();
+        strPatient = intent.getExtras().getString("patient");
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Patient Info"));
