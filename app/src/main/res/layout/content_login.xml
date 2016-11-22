@@ -10,8 +10,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="56dp"
         android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:weightSum="1">
+        android:paddingRight="24dp">
 
         <ImageView android:src="@drawable/lc"
             android:layout_width="wrap_content"
@@ -43,37 +42,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:hint="Password"/>
-
         </android.support.design.widget.TextInputLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1">
-            
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:id="@+id/user_selection">
-
-                <RadioButton
-                    android:text="Patient"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/radioPatient"
-                    android:layout_weight="0.58"/>
-
-                <RadioButton
-                    android:text="Doctor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/radioDoctor"
-                    android:layout_weight="0.94"/>
-
-            </RadioGroup>
-        </LinearLayout>
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_login"
