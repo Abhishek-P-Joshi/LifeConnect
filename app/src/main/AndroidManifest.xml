@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.amank.lifeconnect">
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -20,6 +20,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".RegisterActivity"/>
+        <activity
+            android:name=".Patient_Dashboard"
+            android:label="@string/title_activity_patient__dashboard"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DemoInsert"
+            android:label="@string/title_activity_demo_insert"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DemoGet"
+            android:label="@string/title_activity_demo_get"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <service android:enabled="true" android:name=".SensorHandler" />
     </application>
 
 </manifest>
