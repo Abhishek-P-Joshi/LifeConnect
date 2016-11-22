@@ -60,14 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         _loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent startSenseService = new Intent(LoginActivity.this, SensorHandler.class);
-                Bundle b = new Bundle();
-                b.putString("name", "name");
-                startSenseService.putExtras(b);
-                startService(startSenseService);
-
                 validate();
-
             }
         });
 
@@ -75,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login(String username, String password, String userSelection) {
         //boolean flag = false;
+<<<<<<< HEAD
         //Log.d(TAG, "Login");
         if(userSelection == "Doctor"){
             String sql = "SELECT Name,Password FROM Doctor WHERE Name ='" + username + "' AND Password ='" + password+"'";
@@ -97,6 +91,28 @@ public class LoginActivity extends AppCompatActivity {
 //            String passwd = c.getString(TAG_PASSWORD);
             }catch(Exception e){
                 Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+=======
+        Log.d(TAG, "Login");
+        String sql = "SELECT Name,Password FROM Demo WHERE Name ='" + username + "' AND Password ='" + password+"'";
+        GetFromDatabase getFromDatabase = new GetFromDatabase();
+        authenticate = getFromDatabase.GetData(sql, FileName.ServerPHP.Demo);
+        try {
+            JSONObject jsonObj = new JSONObject(authenticate);
+            values = jsonObj.getJSONArray(TAG_RESULTS);
+            if(values.length()>0)
+            {
+                Intent startSenseService = new Intent(LoginActivity.this, SensorHandler.class);
+                Bundle b = new Bundle();
+                b.putString("name", username);
+                startSenseService.putExtras(b);
+                startService(startSenseService);
+                //flag = true;
+                Intent intent = new Intent(this, DemoInsert.class);
+                startActivity(intent);
+            }else{
+                Toast.makeText(getBaseContext(),"Please Enter Proper Credentials!",Toast.LENGTH_SHORT).show();
+                onLoginFailed();
+>>>>>>> refs/remotes/origin/master
             }
 
         }else if(userSelection=="Patient"){

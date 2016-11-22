@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.location.LocationManager;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -34,6 +35,8 @@ public class SensorHandler extends Service implements SensorEventListener, Locat
     MyTimerTask timerTask;
     SensorTask sensorTask;
     Timer timer;
+    String username;
+    SQLiteDatabase db;
     private SensorManager accelManage;
     private Sensor senseAccel;
     float accelValuesX[] = new float[10];
@@ -42,12 +45,18 @@ public class SensorHandler extends Service implements SensorEventListener, Locat
     int index = 0;
     private static final int GPS_TIME_INTERVAL = 2000; // get gps location every 2 seconds
     private static final int GPS_DISTANCE= 1; // set the distance value in meter
+    private static final float DEFAULT_WEIGHT = 156;
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         // TODO Auto-generated method stub
         Sensor mySensor = sensorEvent.sensor;
         if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            if(index<10) {
+            accelValuesX[index] = sensorEvent.values[0];
+            accelValuesY[index] = sensorEvent.values[1];
+            accelValuesZ[index] = sensorEvent.values[2];
+            accelManage.unregisterListener(this);
+            //accelManage.registerListener(this, senseAccel, SensorManager.SENSOR_DELAY_NORMAL);
+            if(index<9) {
                 index++;
             }
             else
@@ -61,11 +70,6 @@ public class SensorHandler extends Service implements SensorEventListener, Locat
                 if(sum<140) timerTask.updateWalkOrRun(true);
                 else timerTask.updateWalkOrRun(false);
             }
-            accelValuesX[index] = sensorEvent.values[0];
-            accelValuesY[index] = sensorEvent.values[1];
-            accelValuesZ[index] = sensorEvent.values[2];
-            accelManage.unregisterListener(this);
-            //accelManage.registerListener(this, senseAccel, SensorManager.SENSOR_DELAY_NORMAL);
         }
     }
 
@@ -77,12 +81,13 @@ public class SensorHandler extends Service implements SensorEventListener, Locat
 
     @Override
     public void onLocationChanged(Location loc) {
-        Toast.makeText(
-                getBaseContext(),
+        /*Toast.makeText(getBaseContext(),
                 "Location changed: Lat: " + loc.getLatitude() + " Lng: "
-                        + loc.getLongitude(), Toast.LENGTH_SHORT).show();
+                        + loc.getLongitude(), Toast.LENGTH_SHORT).show();*/
         String longitude = "Longitude: " + loc.getLongitude();
         String latitude = "Latitude: " + loc.getLatitude();
+        Log.d(TAG, "Location changed: Lat: "+latitude+" Lng: " + longitude);
+
         current = new Location("current");
         current.set(loc);
         timerTask.updateLocation(current);
@@ -108,6 +113,31 @@ public class SensorHandler extends Service implements SensorEventListener, Locat
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Bundle b = intent.getExtras();
+        username = b.getString("name");
+        try{
+            File mDatabaseFile = new File(getExternalFilesDir(null), "local.db");
+            db = SQLiteDatabase.openOrCreateDatabase(mDatabaseFile, null);
+            db.beginTransaction();
+            try {
+                //perform your database operations here ...
+                db.execSQL("create table "+ username + " ("
+                        + " time integer PRIMARY KEY, "
+                        + " distances text, "
+                        + " calories text ); " );
+
+                db.setTransactionSuccessful(); //commit your changes
+            }
+            catch (SQLiteException e) {
+                //report problem
+                e.printStackTrace();
+            }
+            finally {
+                db.endTransaction();
+            }
+        }catch (SQLException e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
         try {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, GPS_TIME_INTERVAL, GPS_DISTANCE, this);
         }catch (SecurityException e){
@@ -134,11 +164,15 @@ public class SensorHandler extends Service implements SensorEventListener, Locat
         Location previous;
         boolean first;
         boolean walkOrRun;
+        int counter;
+        float totalDistance;
         public MyTimerTask() {
             previous = new Location("previous");
             current = new Location("current");
             first =true;
             walkOrRun = false;
+            counter = 0;
+            totalDistance = 0;
         }
         public void updateLocation(Location loc)
         {
@@ -156,14 +190,53 @@ public class SensorHandler extends Service implements SensorEventListener, Locat
 
         @Override
         public void run() {
-            double distance = current.distanceTo(previous);
+            counter ++;
+            float distance = current.distanceTo(previous);
             String info = "current loc:"+ current.getLatitude()+"\nprevious loc:"+previous.getLatitude()+"\ndistance moved:"+distance;
             previous.set(current);
             Log.d(TAG, info);
-            if(walkOrRun && distance < 120)
+            if(walkOrRun && distance < 125 && distance >0)    //human max running speed = 28 mph = 125 meter/(10sec)
             {
                 //insert into database
+                totalDistance += distance;                 //add up distance for 1 min
             }
+            if(counter>5)
+            {
+                if(totalDistance>0)
+                {
+                    Log.d(TAG, ""+totalDistance);
+                    addToDatabase(totalDistance,getCalories(totalDistance));
+                    totalDistance = 0;
+                }
+                counter = 0;                  //clear counter for 1 min
+            }
+        }
+
+        private void addToDatabase(float dis,float cal) {
+            try {
+                //perform your database operations here ...
+                SimpleDateFormat dateFormat = new SimpleDateFormat("s");
+                //int time = Integer.parseInt(dateFormat.format(System.currentTimeMillis()));
+                long time = System.currentTimeMillis();
+                db.execSQL( "insert into " + username + " (time, distances, calories) values ('"+time+"', '"+ dis+"', '" + cal +"' );" );
+                //db.setTransactionSuccessful(); //commit your changes
+                Log.d(TAG, "added:"+dis+"+"+cal);
+            }
+            catch (SQLiteException e) {
+                //report problem
+                e.printStackTrace();
+            }
+            finally {
+                //db.endTransaction();
+            }
+        }
+
+        private float getCalories(float dis)
+        {
+            float result;
+            if(dis<134) result = dis * 0.055f;    //walking   speed < 5mph
+            else result = dis * 0.070f;            //running   speed > 5mph
+            return result;
         }
     }
     class SensorTask extends TimerTask
