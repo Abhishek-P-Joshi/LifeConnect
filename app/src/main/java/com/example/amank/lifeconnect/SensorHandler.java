@@ -67,7 +67,7 @@ public class SensorHandler extends Service implements SensorEventListener, Locat
                 {
                     sum = sum + Math.abs(accelValuesX[i]) + Math.abs(accelValuesY[i]) + Math.abs(accelValuesZ[i]);
                 }
-                if(sum<140) timerTask.updateWalkOrRun(true);
+                if(sum>140) timerTask.updateWalkOrRun(true);
                 else timerTask.updateWalkOrRun(false);
             }
         }

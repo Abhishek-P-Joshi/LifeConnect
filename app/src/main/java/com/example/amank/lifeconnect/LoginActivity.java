@@ -68,16 +68,26 @@ public class LoginActivity extends AppCompatActivity {
     public void login(String username, String password, String userSelection) {
         //boolean flag = false;
         //Log.d(TAG, "Login");
-        if (userSelection == "Doctor") {
-            String sql = "SELECT Name,Password FROM Doctor WHERE Name ='" + username + "' AND Password ='" + password + "'";
+        if(userSelection.equals("Doctor")) {
+            String sql = "SELECT Email,Password FROM Doctors WHERE Email ='" + username + "' AND Password ='" + password + "'";
             GetFromDatabase getFromDatabase = new GetFromDatabase();
-            authenticate = getFromDatabase.GetData(sql, FileName.ServerPHP.Demo);
+            authenticate = getFromDatabase.GetData(sql, FileName.ServerPHP.Doctor);
             try {
                 JSONObject jsonObj = new JSONObject(authenticate);
                 values = jsonObj.getJSONArray(TAG_RESULTS);
                 if (values.length() > 0) {
+                    Intent startSenseService = new Intent(LoginActivity.this, SensorHandler.class);
+                    Bundle b = new Bundle();
+                    b.putString("name", parseName(username));
+                    startSenseService.putExtras(b);
+                    startService(startSenseService);
                     //flag = true;
-                    Intent intent = new Intent(this, DemoInsert.class);
+                    //Intent intent = new Intent(this, DemoInsert.class);
+                    //startActivity(intent);
+                    Intent intent = new Intent(this, Patient_Dashboard.class);
+                    Bundle bu = new Bundle();
+                    bu.putString("name", parseName(username));
+                    intent.putExtras(bu);
                     startActivity(intent);
                 } else {
                     Toast.makeText(getBaseContext(), "Please Enter Proper Credentials!", Toast.LENGTH_SHORT).show();
@@ -90,10 +100,32 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
 
+        }else if(userSelection.equals("Patient")){
+            String sql = "SELECT Email,Password FROM Patients WHERE Email ='" + username + "' AND Password ='" + password+"'";
+            GetFromDatabase getFromDatabase = new GetFromDatabase();
+            authenticate = getFromDatabase.GetData(sql, FileName.ServerPHP.Patient);
+            try {
+                JSONObject jsonObj = new JSONObject(authenticate);
+                values = jsonObj.getJSONArray(TAG_RESULTS);
+                if(values.length()>0)
+                {
+                    //flag = true;
+                    Intent intent = new Intent(this, Patient_Dashboard.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getBaseContext(),"Please Enter Proper Credentials!",Toast.LENGTH_SHORT).show();
+                    onLoginFailed();
+                }
 //            JSONObject c = values.getJSONObject(0);
 //            String name = c.getString(TAG_NAME);
-//            String passwd = c.getString(TAG_PASSWORD)
-            _loginButton.setEnabled(true);
+//            String passwd = c.getString(TAG_PASSWORD);
+            }catch(Exception e){
+                Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+
+        }
+
+        _loginButton.setEnabled(true);
 
 //        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
 //                R.style.AppTheme_Dark_Dialog);
@@ -104,8 +136,13 @@ public class LoginActivity extends AppCompatActivity {
             //String email = _emailText.getText().toString();
             //String password = _passwordText.getText().toString();
         }
-    }
 
+    private String parseName(String username)
+    {
+        int index = username.indexOf("@");
+        if (index!=-1) return username.substring(0,index);
+        else return username;
+    }
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
 
