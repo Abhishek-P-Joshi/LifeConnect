@@ -41,7 +41,7 @@ public class Patient_Dashboard extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),username);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -81,9 +81,10 @@ public class Patient_Dashboard extends AppCompatActivity {
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
+        private String username;
+        public SectionsPagerAdapter(FragmentManager fm,String s) {
             super(fm);
+            username =s;
         }
 
         @Override
@@ -92,7 +93,7 @@ public class Patient_Dashboard extends AppCompatActivity {
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position){
                 case 0:
-                    return Patient_Main.newInstance(position);
+                    return Patient_Main.newInstance(position,username);
                 case 1:
                     return Patient_Chat.newInstance();
             }
