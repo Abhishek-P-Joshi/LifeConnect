@@ -76,17 +76,17 @@ public class LoginActivity extends AppCompatActivity {
                 JSONObject jsonObj = new JSONObject(authenticate);
                 values = jsonObj.getJSONArray(TAG_RESULTS);
                 if (values.length() > 0) {
-                    Intent startSenseService = new Intent(LoginActivity.this, SensorHandler.class);
+                    /*Intent startSenseService = new Intent(LoginActivity.this, SensorHandler.class);
                     Bundle b = new Bundle();
                     b.putString("name", parseName(username));
                     startSenseService.putExtras(b);
-                    startService(startSenseService);
+                    startService(startSenseService);*/
                     //flag = true;
                     //Intent intent = new Intent(this, DemoInsert.class);
                     //startActivity(intent);
-                    Intent intent = new Intent(this, Patient_Dashboard.class);
+                    Intent intent = new Intent(this, SelectPatient.class);
                     Bundle bu = new Bundle();
-                    bu.putString("name", parseName(username));
+                    bu.putString("email", username);
                     intent.putExtras(bu);
                     startActivity(intent);
                 } else {
@@ -121,8 +121,6 @@ public class LoginActivity extends AppCompatActivity {
                     Bundle bu = new Bundle();
                     bu.putString("name", parseName(username));
                     intent.putExtras(bu);
-                    //flag = true;
-                    //Intent intent = new Intent(this, Patient_Dashboard.class);
                     startActivity(intent);
                 }else{
                     Toast.makeText(getBaseContext(),"Please Enter Proper Credentials!",Toast.LENGTH_SHORT).show();
