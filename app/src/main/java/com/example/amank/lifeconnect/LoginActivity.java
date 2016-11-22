@@ -5,12 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
+    RadioGroup radioButtonGroup;
+    RadioButton r;
+    String userselectText;
     //private static final String TAG_PASSWORD = "Password";
     //private static final String TAG_NAME = "Name";
     private static final String TAG_RESULTS="result";
@@ -43,10 +47,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
         ButterKnife.inject(this);
+        radioButtonGroup = (RadioGroup) findViewById(R.id.user_selection);
         ActivityCompat.requestPermissions(this, new String[] {
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION },1);
@@ -67,28 +73,54 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void login(String username, String password) {
+    public void login(String username, String password, String userSelection) {
         //boolean flag = false;
-        Log.d(TAG, "Login");
-        String sql = "SELECT Name,Password FROM Demo WHERE Name ='" + username + "' AND Password ='" + password+"'";
-        GetFromDatabase getFromDatabase = new GetFromDatabase();
-        authenticate = getFromDatabase.GetData(sql, FileName.ServerPHP.Demo);
-        try {
-            JSONObject jsonObj = new JSONObject(authenticate);
-            values = jsonObj.getJSONArray(TAG_RESULTS);
-            if(values.length()>0)
-            {
-                //flag = true;
-                Intent intent = new Intent(this, DemoInsert.class);
-                startActivity(intent);
-            }else{
-                Toast.makeText(getBaseContext(),"Please Enter Proper Credentials!",Toast.LENGTH_SHORT).show();
-                onLoginFailed();
-            }
+        //Log.d(TAG, "Login");
+        if(userSelection == "Doctor"){
+            String sql = "SELECT Name,Password FROM Doctor WHERE Name ='" + username + "' AND Password ='" + password+"'";
+            GetFromDatabase getFromDatabase = new GetFromDatabase();
+            authenticate = getFromDatabase.GetData(sql, FileName.ServerPHP.Demo);
+            try {
+                JSONObject jsonObj = new JSONObject(authenticate);
+                values = jsonObj.getJSONArray(TAG_RESULTS);
+                if(values.length()>0)
+                {
+                    //flag = true;
+                    Intent intent = new Intent(this, DemoInsert.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getBaseContext(),"Please Enter Proper Credentials!",Toast.LENGTH_SHORT).show();
+                    onLoginFailed();
+                }
 //            JSONObject c = values.getJSONObject(0);
 //            String name = c.getString(TAG_NAME);
 //            String passwd = c.getString(TAG_PASSWORD);
-        }catch(Exception e){
+            }catch(Exception e){
+                Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+
+        }else if(userSelection=="Patient"){
+            String sql = "SELECT Name,Password FROM Patient WHERE Name ='" + username + "' AND Password ='" + password+"'";
+            GetFromDatabase getFromDatabase = new GetFromDatabase();
+            authenticate = getFromDatabase.GetData(sql, FileName.ServerPHP.Demo);
+            try {
+                JSONObject jsonObj = new JSONObject(authenticate);
+                values = jsonObj.getJSONArray(TAG_RESULTS);
+                if(values.length()>0)
+                {
+                    //flag = true;
+                    Intent intent = new Intent(this, DemoInsert.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getBaseContext(),"Please Enter Proper Credentials!",Toast.LENGTH_SHORT).show();
+                    onLoginFailed();
+                }
+//            JSONObject c = values.getJSONObject(0);
+//            String name = c.getString(TAG_NAME);
+//            String passwd = c.getString(TAG_PASSWORD);
+            }catch(Exception e){
+                Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
 
         }
 
@@ -118,6 +150,10 @@ public class LoginActivity extends AppCompatActivity {
 
     public void validate() {
         boolean valid = true;
+        int radioButtonID = radioButtonGroup.getCheckedRadioButtonId();
+        View radioButton = radioButtonGroup.findViewById(radioButtonID);
+        int idx = radioButtonGroup.indexOfChild(radioButton);
+        r = (RadioButton)radioButtonGroup.getChildAt(idx);
 
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
@@ -135,8 +171,16 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             _passwordText.setError(null);
         }
+
+        if (idx < 0) {
+            Toast.makeText(LoginActivity.this, "Please select an option", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else{
+            userselectText = r.getText().toString();
+        }
         if(valid == true){
-            login(email,password);
+            login(email,password,userselectText);
         }else{
             onLoginFailed();
         }
