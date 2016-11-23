@@ -13,6 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Context;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 
 /**
@@ -65,7 +69,7 @@ public class Patient_Main extends Fragment {
             db.beginTransaction();
             try {
                 //perform your database operations here ...
-                Cursor c = db.rawQuery("SELECT * FROM " + username , null);
+                Cursor c = db.rawQuery("SELECT * FROM " + parseName(username) , null);
                 if(c.moveToFirst()){
                     do{
                         //Do something Here with values
@@ -91,6 +95,26 @@ public class Patient_Main extends Fragment {
         metersMoved.setText(totalDis+" Meters");
         calories.setText(totalCal+"");
 
+        GetFromDatabase get= new GetFromDatabase();
+        String sql = "SELECT appointment FROM Patients\n" + "WHERE Email='"+username+"';";
+        String out = get.GetData(sql,FileName.ServerPHP.Patient);
+        JSONObject jsonObj = null;
+        try {
+            jsonObj = new JSONObject(out);
+            JSONArray values = jsonObj.getJSONArray("result");
+            JSONObject value =(JSONObject) values.get(0);
+            String date = value.getString("id");
+            appointments.setText(date);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return rootView;
+    }
+
+    private String parseName(String username)
+    {
+        int index = username.indexOf("@");
+        if (index!=-1) return username.substring(0,index);
+        else return username;
     }
 }

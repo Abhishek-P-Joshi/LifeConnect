@@ -119,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                     //startActivity(intent);
                     Intent intent = new Intent(this, Patient_Dashboard.class);
                     Bundle bu = new Bundle();
-                    bu.putString("name", parseName(username));
+                    bu.putString("name", username);
                     intent.putExtras(bu);
                     startActivity(intent);
                 }else{
