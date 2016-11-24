@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 
 public class SelectPatient extends LoginActivity implements AdapterView.OnItemSelectedListener {
-    String stremail,strSelectedPatient;
+    String stremail,strSelectedPatient,strDoctorName;
     private Button btnSelect;
     private Spinner spinPatientList;
     ArrayList<String> PatientList = new ArrayList<String>();
@@ -49,7 +49,7 @@ public class SelectPatient extends LoginActivity implements AdapterView.OnItemSe
                 Intent intent = new Intent(SelectPatient.this, DoctorDashboard.class);
                 Bundle bu = new Bundle();
                 bu.putString("patient", strSelectedPatient);
-
+                bu.putString("doctorName", strDoctorName);
                 intent.putExtras(bu);
                 startActivity(intent);
             }
@@ -79,6 +79,9 @@ public class SelectPatient extends LoginActivity implements AdapterView.OnItemSe
         try {
             JSONObject jsonObj = new JSONObject(myJSON);
             patients = jsonObj.getJSONArray("result");
+
+            JSONObject patient =(JSONObject) patients.get(0);
+            strDoctorName = patient.getString("name");
 
             for(int i=0;i<patients.length();i++){
                 JSONObject c = patients.getJSONObject(i);
