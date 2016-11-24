@@ -12,8 +12,13 @@ import android.view.ViewGroup;
 
 public class TabFragment3 extends Fragment {
 
+    private String strPatientName, strDoctorName;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.tab_fragment_3, container, false);
+        View v= inflater.inflate(R.layout.tab_fragment_3, container, false);
+        strPatientName = getArguments().getString("Patient Name");
+        strDoctorName = getArguments().getString("doctorName");
+
+        return v;
     }
 }

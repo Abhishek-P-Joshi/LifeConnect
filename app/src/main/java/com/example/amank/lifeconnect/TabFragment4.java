@@ -36,11 +36,13 @@ public class TabFragment4 extends Fragment
     private TaskDbHelper mHelper;
     private ListView mTaskListView;
     private ArrayAdapter<String> mAdapter;
+    private String strPatientName;
     //private Button btnDelete;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.tab_fragment_4, container, false);
+        strPatientName = getArguments().getString("Patient Name");;
 
         FloatingActionButton action_add_task = (FloatingActionButton) v.findViewById(R.id.action_add_task);
         action_add_task.setOnClickListener(new View.OnClickListener() {
