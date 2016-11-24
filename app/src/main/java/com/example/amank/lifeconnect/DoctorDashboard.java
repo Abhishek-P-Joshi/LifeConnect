@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 public class DoctorDashboard extends AppCompatActivity
 {
-    private String strPatient;
+    private String strPatient, strDoctorName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,7 @@ public class DoctorDashboard extends AppCompatActivity
 
         Intent intent = getIntent();
         strPatient = intent.getExtras().getString("patient");
+        strDoctorName = intent.getExtras().getString("doctorName");
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Patient Info"));
@@ -47,7 +48,7 @@ public class DoctorDashboard extends AppCompatActivity
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         final
-        PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), strPatient, strDoctorName);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

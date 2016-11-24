@@ -35,10 +35,13 @@ public class TabFragment2 extends Fragment {
     Button buttonDisconnect;
     String msgLog = "";
     ChatClientThread chatClientThread = null;
+    private String strPatientName, strDoctorName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.tab_fragment_2, container, false);
+        strPatientName = getArguments().getString("Patient Name");
+        strDoctorName = getArguments().getString("doctorName");
 
         loginPanel = (LinearLayout) v.findViewById(R.id.loginpanel);
         chatPanel = (LinearLayout) v.findViewById(R.id.chatpanel);
