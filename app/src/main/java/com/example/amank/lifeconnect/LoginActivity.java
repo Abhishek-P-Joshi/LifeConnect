@@ -111,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                 {
                     Intent startSenseService = new Intent(LoginActivity.this, SensorHandler.class);
                     Bundle b = new Bundle();
-                    b.putString("name", parseName(username));
+                    b.putString("name", username);
                     startSenseService.putExtras(b);
                     startService(startSenseService);
                     //flag = true;
@@ -147,12 +147,6 @@ public class LoginActivity extends AppCompatActivity {
             //String password = _passwordText.getText().toString();
         }
 
-    private String parseName(String username)
-    {
-        int index = username.indexOf("@");
-        if (index!=-1) return username.substring(0,index);
-        else return username;
-    }
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
 
