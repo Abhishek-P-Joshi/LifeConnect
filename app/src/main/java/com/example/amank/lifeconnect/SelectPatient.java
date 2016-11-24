@@ -49,6 +49,7 @@ public class SelectPatient extends LoginActivity implements AdapterView.OnItemSe
                 Intent intent = new Intent(SelectPatient.this, DoctorDashboard.class);
                 Bundle bu = new Bundle();
                 bu.putString("patient", strSelectedPatient);
+
                 intent.putExtras(bu);
                 startActivity(intent);
             }

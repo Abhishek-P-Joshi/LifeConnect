@@ -37,6 +37,7 @@ public class SensorHandler extends Service implements SensorEventListener, Locat
     Timer timer;
     String username;
     SQLiteDatabase db;
+    String email;
     private SensorManager accelManage;
     private Sensor senseAccel;
     float accelValuesX[] = new float[10];
@@ -67,7 +68,7 @@ public class SensorHandler extends Service implements SensorEventListener, Locat
                 {
                     sum = sum + Math.abs(accelValuesX[i]) + Math.abs(accelValuesY[i]) + Math.abs(accelValuesZ[i]);
                 }
-                if(sum>140) timerTask.updateWalkOrRun(true);
+                if(sum>130) timerTask.updateWalkOrRun(true);
                 else timerTask.updateWalkOrRun(false);
             }
         }
@@ -111,10 +112,18 @@ public class SensorHandler extends Service implements SensorEventListener, Locat
         timer = new Timer();
     }
 
+    private String parseName(String username)
+    {
+        int index = username.indexOf("@");
+        if (index!=-1) return username.substring(0,index);
+        else return username;
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Bundle b = intent.getExtras();
-        username = b.getString("name");
+        email = b.getString("name");
+        username = parseName(email);
         try{
             File mDatabaseFile = new File(getExternalFilesDir(null), "local.db");
             db = SQLiteDatabase.openOrCreateDatabase(mDatabaseFile, null);
@@ -229,6 +238,9 @@ public class SensorHandler extends Service implements SensorEventListener, Locat
             finally {
                 //db.endTransaction();
             }
+            GetFromDatabase update= new GetFromDatabase();
+            String sql = "UPDATE Patients\n" +"SET STEPS=STEPS+"+dis+", Calories = Calories+"+cal+"\n" +"WHERE Email='"+email+"';";
+            update.GetData(sql,FileName.ServerPHP.Patient);
         }
 
         private float getCalories(float dis)
