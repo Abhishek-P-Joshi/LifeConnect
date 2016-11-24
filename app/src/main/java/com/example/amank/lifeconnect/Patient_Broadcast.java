@@ -1,11 +1,11 @@
 package com.example.amank.lifeconnect;
 
-/**
- * Created by Yogesh on 11/13/2016.
- */
-
+import android.app.NotificationManager;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +21,15 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class TabFragment3 extends Fragment {
+/**
+ * Created by Aman K on 11/23/2016.
+ */
+
+public class Patient_Broadcast extends Fragment {
+
+    private static String email;
+    private static String strPatientName;
+
     static final int SocketServerPORT = 8080;
     LinearLayout loginPanel, chatPanel;
     EditText editTextUserName;
@@ -32,27 +40,40 @@ public class TabFragment3 extends Fragment {
     Button buttonDisconnect;
     String msgLog = "";
     ChatClientThread chatClientThread = null;
+    NotificationCompat.Builder mBuilder;
 
-    private String strPatientName, strDoctorName;
+
+
+    public static Patient_Broadcast newInstance(String s, String name) {
+        Patient_Broadcast fragment = new Patient_Broadcast();
+        email = s;
+        strPatientName = name;
+        return fragment;
+    }
+
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v= inflater.inflate(R.layout.tab_fragment_3, container, false);
-        strPatientName = getArguments().getString("Patient Name");
-        strDoctorName = getArguments().getString("doctorName");
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.patient_broadcast, container, false);
+        loginPanel = (LinearLayout) rootView.findViewById(R.id.loginpanel);
+        chatPanel = (LinearLayout) rootView.findViewById(R.id.chatpanel);
 
-        loginPanel = (LinearLayout) v.findViewById(R.id.loginpanel);
-        chatPanel = (LinearLayout) v.findViewById(R.id.chatpanel);
-
-        editTextUserName = (EditText) v.findViewById(R.id.username);
-        editTextUserName.setText(strDoctorName);
+        editTextUserName = (EditText) rootView.findViewById(R.id.username);
+        editTextUserName.setText(strPatientName);
 //        editTextAddress = (EditText) findViewById(R.id.address);
         //textPort = (TextView) v.findViewById(R.id.port);
         //textPort.setText("port: " + SocketServerPORT);
-        buttonConnect = (Button) v.findViewById(R.id.connect);
-        buttonDisconnect = (Button) v.findViewById(R.id.disconnect);
-        chatMsg = (TextView) v.findViewById(R.id.chatmsg);
+        buttonConnect = (Button) rootView.findViewById(R.id.connect);
+        buttonDisconnect = (Button) rootView.findViewById(R.id.disconnect);
+        chatMsg = (TextView) rootView.findViewById(R.id.chatmsg);
 
         final String IPAddress = "192.168.0.17";
+
+        mBuilder =
+                new NotificationCompat.Builder(getContext())
+                        .setSmallIcon(R.drawable.notif)
+                        .setContentTitle("LifeConnect")
+                        .setContentText("You have a new message");
 
         buttonConnect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,12 +84,6 @@ public class TabFragment3 extends Fragment {
                             Toast.LENGTH_LONG).show();
                     return;
                 }
-//                String textAddress = editTextAddress.getText().toString();
-//                if (textAddress.equals("")) {
-//                    Toast.makeText(MainActivity.this, "Enter Addresse",
-//                            Toast.LENGTH_LONG).show();
-//                    return;
-//                }
                 msgLog = "";
                 chatMsg.setText(msgLog);
                 loginPanel.setVisibility(View.GONE);
@@ -89,28 +104,9 @@ public class TabFragment3 extends Fragment {
                 chatClientThread.disconnect();
             }
         });
+        return rootView;
 
 
-        editTextSay = (EditText) v.findViewById(R.id.say);
-        buttonSend = (Button) v.findViewById(R.id.send);
-
-        buttonSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (editTextSay.getText().toString().equals("")) {
-                    return;
-                }
-
-                if (chatClientThread == null) {
-                    return;
-                }
-
-                chatClientThread.sendMsg(editTextSay.getText().toString() + "\n");
-
-            }
-        });
-
-        return v;
     }
 
     private class ChatClientThread extends Thread {
@@ -151,6 +147,9 @@ public class TabFragment3 extends Fragment {
                             @Override
                             public void run() {
                                 chatMsg.setText(msgLog);
+                                NotificationManager mNotificationManager =
+                                        (NotificationManager)getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                                mNotificationManager.notify(0,mBuilder.build());
                             }
                         });
                     }
