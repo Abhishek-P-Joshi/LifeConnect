@@ -1,5 +1,7 @@
 package com.example.amank.lifeconnect;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,6 +28,7 @@ import java.net.UnknownHostException;
 public class Patient_Broadcast extends Fragment {
 
     private static String email;
+    private static String strPatientName;
 
     static final int SocketServerPORT = 8080;
     LinearLayout loginPanel, chatPanel;
@@ -40,9 +43,11 @@ public class Patient_Broadcast extends Fragment {
     NotificationCompat.Builder mBuilder;
 
 
-    public static Patient_Broadcast newInstance(String s) {
+
+    public static Patient_Broadcast newInstance(String s, String name) {
         Patient_Broadcast fragment = new Patient_Broadcast();
         email = s;
+        strPatientName = name;
         return fragment;
     }
 
@@ -54,6 +59,7 @@ public class Patient_Broadcast extends Fragment {
         chatPanel = (LinearLayout) rootView.findViewById(R.id.chatpanel);
 
         editTextUserName = (EditText) rootView.findViewById(R.id.username);
+        editTextUserName.setText(strPatientName);
 //        editTextAddress = (EditText) findViewById(R.id.address);
         //textPort = (TextView) v.findViewById(R.id.port);
         //textPort.setText("port: " + SocketServerPORT);
@@ -65,9 +71,9 @@ public class Patient_Broadcast extends Fragment {
 
         mBuilder =
                 new NotificationCompat.Builder(getContext())
-                .setSmallIcon(R.drawable.notif)
-                .setContentTitle("LifeConnect")
-                .setContentText("You have a new message");
+                        .setSmallIcon(R.drawable.notif)
+                        .setContentTitle("LifeConnect")
+                        .setContentText("You have a new message");
 
         buttonConnect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,9 +147,9 @@ public class Patient_Broadcast extends Fragment {
                             @Override
                             public void run() {
                                 chatMsg.setText(msgLog);
-//                                NotificationManager mNotificationManager =
-//                                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//                                mNotificationManager.notify(0,mBuilder.build());
+                                NotificationManager mNotificationManager =
+                                        (NotificationManager)getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                                mNotificationManager.notify(0,mBuilder.build());
                             }
                         });
                     }
