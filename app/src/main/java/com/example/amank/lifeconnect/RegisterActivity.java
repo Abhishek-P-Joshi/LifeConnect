@@ -4,14 +4,13 @@ package com.example.amank.lifeconnect;
  * Created by Yogesh on 11/20/2016.
  */
 
-import java.util.ArrayList;
-import java.util.Calendar;
-
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.AdapterView;
-import android.widget.Toast;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -20,14 +19,14 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ArrayAdapter;
-
-import android.app.DatePickerDialog;
-import android.app.Dialog;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 public class RegisterActivity extends LoginActivity implements AdapterView.OnItemSelectedListener
 {
@@ -80,7 +79,7 @@ public class RegisterActivity extends LoginActivity implements AdapterView.OnIte
         spinnerDrSelect = (LinearLayout)findViewById(R.id.spinnerLayout);
         spinnerDrSelect.setVisibility(LinearLayout.GONE);
 
-        DoctorList = getTableValues();
+        DoctorList = getDoctorTableValues();
         final ArrayAdapter my_Adapter = new ArrayAdapter(this, R.layout.spinner_row, DoctorList);
 
         final InsertIntoDatabase insertIntoDatabase = new InsertIntoDatabase();
@@ -141,12 +140,12 @@ public class RegisterActivity extends LoginActivity implements AdapterView.OnIte
         // Another interface callback
     }
 
-    public ArrayList<String> getTableValues() {
+    public ArrayList<String> getDoctorTableValues() {
 
         ArrayList<String> my_array = new ArrayList<String>();
         String sql = "SELECT * FROM Doctors";
         GetFromDatabase getFromDatabase = new GetFromDatabase();
-        JsonString = getFromDatabase.GetData(sql, "Doctors");
+        JsonString = getFromDatabase.GetData(sql, FileName.ServerPHP.Doctor);
         showListDoctor(JsonString, my_array);
         return my_array;
     }

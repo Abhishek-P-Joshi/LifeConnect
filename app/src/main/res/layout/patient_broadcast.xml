@@ -61,17 +61,17 @@
         android:orientation="vertical"
         android:visibility="gone" >
 
-        <EditText
-            android:id="@+id/say"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Say something" />
+        <!--<EditText-->
+            <!--android:id="@+id/say"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:hint="Say something" />-->
 
-        <Button
-            android:id="@+id/send"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Send" />
+        <!--<Button-->
+            <!--android:id="@+id/send"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Send" />-->
 
         <Button
             android:id="@+id/disconnect"

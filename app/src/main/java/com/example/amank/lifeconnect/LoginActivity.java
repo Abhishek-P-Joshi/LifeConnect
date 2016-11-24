@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -28,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     RadioGroup radioButtonGroup;
     RadioButton r;
     String userselectText;
+    Button btnsignup;
     //private static final String TAG_PASSWORD = "Password";
     //private static final String TAG_NAME = "Name";
     private static final String TAG_RESULTS="result";
@@ -40,8 +40,8 @@ public class LoginActivity extends AppCompatActivity {
     @InjectView(R.id.input_password) EditText _passwordText;
     @InjectView(R.id.btn_login)
     Button _loginButton;
-    @InjectView(R.id.link_signup)
-    TextView _signupLink;
+    //@InjectView(R.id.link_signup)
+    //TextView _signupLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
 
         ButterKnife.inject(this);
         radioButtonGroup = (RadioGroup) findViewById(R.id.user_selection);
+        btnsignup = (Button) findViewById(R.id.btn_signup);
         ActivityCompat.requestPermissions(this, new String[] {
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION },1);
@@ -60,6 +61,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 validate();
+            }
+        });
+
+        btnsignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -170,14 +179,14 @@ public class LoginActivity extends AppCompatActivity {
         String password = _passwordText.getText().toString();
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
+            _emailText.setError("Enter a valid email address");
             valid = false;
         } else {
             _emailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
+        if (password.isEmpty() || password.length() < 4 || password.length() > 12) {
+            _passwordText.setError("Password between 4 and 12 alphanumeric characters");
             valid = false;
         } else {
             _passwordText.setError(null);
