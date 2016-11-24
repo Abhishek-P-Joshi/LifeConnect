@@ -97,6 +97,8 @@ public class Patient_Dashboard extends AppCompatActivity {
                 case 1:
                     return Patient_Chat.newInstance();
                 case 2:
+                    return Patient_Broadcast.newInstance(username);
+                case 3:
                     return Appointment_Calendar.newInstance(username);
             }
             return null;
@@ -104,8 +106,8 @@ public class Patient_Dashboard extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // Show 4 total pages.
+            return 4;
         }
 
         @Override
@@ -117,6 +119,8 @@ public class Patient_Dashboard extends AppCompatActivity {
                     return "SECTION 2";
                 case 2:
                     return "SECTION 3";
+                case 3:
+                    return "SECTION 4";
             }
             return null;
         }

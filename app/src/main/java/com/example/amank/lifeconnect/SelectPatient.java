@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 
 public class SelectPatient extends LoginActivity implements AdapterView.OnItemSelectedListener {
-    String stremail,strSelectedPatient;
+    String stremail,strSelectedPatient,strDoctorName;
     private Button btnSelect;
     private Spinner spinPatientList;
     ArrayList<String> PatientList = new ArrayList<String>();
@@ -37,7 +37,7 @@ public class SelectPatient extends LoginActivity implements AdapterView.OnItemSe
 
         spinPatientList = (Spinner)findViewById(R.id.spinnerPatientList);
         spinPatientList.setOnItemSelectedListener(this);
-        PatientList = getTableValues();
+        PatientList = getPatientTableValues();
         final ArrayAdapter my_Adapter = new ArrayAdapter(this, R.layout.spinner_row, PatientList);
         spinPatientList.setAdapter(my_Adapter);
 
@@ -49,7 +49,7 @@ public class SelectPatient extends LoginActivity implements AdapterView.OnItemSe
                 Intent intent = new Intent(SelectPatient.this, DoctorDashboard.class);
                 Bundle bu = new Bundle();
                 bu.putString("patient", strSelectedPatient);
-
+                bu.putString("doctorName", strDoctorName);
                 intent.putExtras(bu);
                 startActivity(intent);
             }
@@ -65,7 +65,7 @@ public class SelectPatient extends LoginActivity implements AdapterView.OnItemSe
         // Another interface callback
     }
 
-    public ArrayList<String> getTableValues() {
+    public ArrayList<String> getPatientTableValues() {
 
         ArrayList<String> my_array = new ArrayList<String>();
         String sql = "SELECT * FROM Doctors WHERE Email='"+stremail+"'";
@@ -79,6 +79,9 @@ public class SelectPatient extends LoginActivity implements AdapterView.OnItemSe
         try {
             JSONObject jsonObj = new JSONObject(myJSON);
             patients = jsonObj.getJSONArray("result");
+
+            JSONObject patient =(JSONObject) patients.get(0);
+            strDoctorName = patient.getString("name");
 
             for(int i=0;i<patients.length();i++){
                 JSONObject c = patients.getJSONObject(i);
