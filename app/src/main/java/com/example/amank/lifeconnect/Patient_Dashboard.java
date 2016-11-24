@@ -5,11 +5,16 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Patient_Dashboard extends AppCompatActivity {
 
@@ -21,6 +26,10 @@ public class Patient_Dashboard extends AppCompatActivity {
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
+
+    public Patient_Dashboard(){
+
+    }
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
@@ -28,6 +37,10 @@ public class Patient_Dashboard extends AppCompatActivity {
      */
     private ViewPager mViewPager;
     private String username;
+    private NotificationCompat.Builder mBuilder;
+    private String JsonString;
+    private JSONArray patients;
+    private String strPatientName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +49,20 @@ public class Patient_Dashboard extends AppCompatActivity {
 
         Intent intent = getIntent();
         username = intent.getExtras().getString("name");
+
+        String sql = "SELECT * FROM Patients WHERE Email='"+username+"'";
+        GetFromDatabase getFromDatabase = new GetFromDatabase();
+        JsonString = getFromDatabase.GetData(sql, FileName.ServerPHP.Patient);
+
+        try {
+            JSONObject jsonObj = new JSONObject(JsonString);
+            patients = jsonObj.getJSONArray("result");
+
+            JSONObject patient =(JSONObject) patients.get(0);
+            strPatientName = patient.getString("name");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -97,7 +124,7 @@ public class Patient_Dashboard extends AppCompatActivity {
                 case 1:
                     return Patient_Chat.newInstance();
                 case 2:
-                    return Patient_Broadcast.newInstance(username);
+                    return Patient_Broadcast.newInstance(username,strPatientName);
                 case 3:
                     return Appointment_Calendar.newInstance(username);
             }
