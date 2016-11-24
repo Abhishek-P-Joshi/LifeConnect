@@ -37,7 +37,7 @@ public class SelectPatient extends LoginActivity implements AdapterView.OnItemSe
 
         spinPatientList = (Spinner)findViewById(R.id.spinnerPatientList);
         spinPatientList.setOnItemSelectedListener(this);
-        PatientList = getTableValues();
+        PatientList = getPatientTableValues();
         final ArrayAdapter my_Adapter = new ArrayAdapter(this, R.layout.spinner_row, PatientList);
         spinPatientList.setAdapter(my_Adapter);
 
@@ -64,7 +64,7 @@ public class SelectPatient extends LoginActivity implements AdapterView.OnItemSe
         // Another interface callback
     }
 
-    public ArrayList<String> getTableValues() {
+    public ArrayList<String> getPatientTableValues() {
 
         ArrayList<String> my_array = new ArrayList<String>();
         String sql = "SELECT * FROM Doctors WHERE Email='"+stremail+"'";
