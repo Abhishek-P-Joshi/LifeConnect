@@ -67,7 +67,7 @@ public class Patient_Broadcast extends Fragment {
         buttonDisconnect = (Button) rootView.findViewById(R.id.disconnect);
         chatMsg = (TextView) rootView.findViewById(R.id.chatmsg);
 
-        final String IPAddress = "192.168.0.17";
+        final String IPAddress = "192.168.0.6";
 
         mBuilder =
                 new NotificationCompat.Builder(getContext())
