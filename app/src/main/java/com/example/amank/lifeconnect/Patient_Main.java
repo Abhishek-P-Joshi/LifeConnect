@@ -115,6 +115,8 @@ public class Patient_Main extends Fragment {
             }
         }catch (SQLException e){
         }
+        totalDis = Float.parseFloat(strSteps) + totalDis;
+        totalCal = Float.parseFloat(strCalories) +totalCal;
         metersMoved.setText(totalDis+" Meters");
         calories.setText(totalCal+"");
 
