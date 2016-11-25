@@ -35,7 +35,7 @@ public class Patient_Main extends Fragment {
     private static String username;
     private String JsonString;
     private JSONArray patients;
-    private String strMedicine, strAppointment;
+    private String strMedicine, strAppointment, strSteps, strCalories;
 
     public Patient_Main() {
     }
@@ -75,6 +75,10 @@ public class Patient_Main extends Fragment {
             medicines.setText(strMedicine);
             strAppointment = patient.getString("appointment");
             appointments.setText(strAppointment);
+            strSteps = patient.getString("steps");
+            metersMoved.setText(strSteps);
+            strCalories = patient.getString("calories");
+            calories.setText(strCalories);
         }
         catch (JSONException e) {
             e.printStackTrace();
