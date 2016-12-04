@@ -52,7 +52,7 @@ public class TabFragment3 extends Fragment {
         buttonDisconnect = (Button) v.findViewById(R.id.disconnect);
         chatMsg = (TextView) v.findViewById(R.id.chatmsg);
 
-        final String IPAddress = "192.168.0.17";
+        final String IPAddress = "192.168.0.6";
 
         buttonConnect.setOnClickListener(new View.OnClickListener() {
             @Override
