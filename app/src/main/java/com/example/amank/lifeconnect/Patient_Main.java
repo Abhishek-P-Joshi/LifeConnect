@@ -10,8 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.content.Context;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +35,7 @@ public class Patient_Main extends Fragment {
     private static String username;
     private String JsonString;
     private JSONArray patients;
-    private String strMedicine, strAppointment;
+    private String strMedicine, strAppointment, strSteps, strCalories;
 
     public Patient_Main() {
     }
@@ -64,7 +62,7 @@ public class Patient_Main extends Fragment {
         medicines = (TextView) rootView.findViewById(R.id.textView_medicines);
         appointments = (TextView) rootView.findViewById(R.id.textView_appointments);
 
-        String sql = "SELECT * FROM Patients WHERE Name='"+username+"'";
+        String sql = "SELECT * FROM Patients WHERE Email='"+username+"'";
         GetFromDatabase get = new GetFromDatabase();
         JsonString = get.GetData(sql, FileName.ServerPHP.Patient);
         JSONObject jsonObj = null;
@@ -77,6 +75,10 @@ public class Patient_Main extends Fragment {
             medicines.setText(strMedicine);
             strAppointment = patient.getString("appointment");
             appointments.setText(strAppointment);
+            strSteps = patient.getString("steps");
+            metersMoved.setText(strSteps + " Meters");
+            strCalories = patient.getString("calories");
+            calories.setText(strCalories);
         }
         catch (JSONException e) {
             e.printStackTrace();
@@ -113,13 +115,15 @@ public class Patient_Main extends Fragment {
             }
         }catch (SQLException e){
         }
-        metersMoved.setText(totalDis+" Meters");
-        calories.setText(totalCal+"");
+        //totalDis = Float.parseFloat(strSteps) + totalDis;
+        //totalCal = Float.parseFloat(strCalories) +totalCal;
+        //metersMoved.setText(totalDis+" Meters");
+        //calories.setText(totalCal+"");
 
-        /*GetFromDatabase get= new GetFromDatabase();
-        String sql = "SELECT appointment FROM Patients\n" + "WHERE Email='"+username+"';";
+
+        /*sql = "SELECT appointment FROM Patients\n" + "WHERE Email='"+username+"';";
         String out = get.GetData(sql,FileName.ServerPHP.Patient);
-        JSONObject jsonObj = null;
+        //JSONObject jsonObj = null;
         try {
             jsonObj = new JSONObject(out);
             JSONArray values = jsonObj.getJSONArray("result");
