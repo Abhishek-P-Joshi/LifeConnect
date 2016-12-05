@@ -35,7 +35,7 @@ public class Patient_Main extends Fragment {
     private static String username;
     private String JsonString;
     private JSONArray patients;
-    private String strMedicine, strAppointment;
+    private String strMedicine, strAppointment, strSteps, strCalories;
 
     public Patient_Main() {
     }
@@ -75,6 +75,10 @@ public class Patient_Main extends Fragment {
             medicines.setText(strMedicine);
             strAppointment = patient.getString("appointment");
             appointments.setText(strAppointment);
+            strSteps = patient.getString("steps");
+            metersMoved.setText(strSteps + " Meters");
+            strCalories = patient.getString("calories");
+            calories.setText(strCalories);
         }
         catch (JSONException e) {
             e.printStackTrace();
@@ -111,8 +115,10 @@ public class Patient_Main extends Fragment {
             }
         }catch (SQLException e){
         }
-        metersMoved.setText(totalDis+" Meters");
-        calories.setText(totalCal+"");
+        //totalDis = Float.parseFloat(strSteps) + totalDis;
+        //totalCal = Float.parseFloat(strCalories) +totalCal;
+        //metersMoved.setText(totalDis+" Meters");
+        //calories.setText(totalCal+"");
 
 
         /*sql = "SELECT appointment FROM Patients\n" + "WHERE Email='"+username+"';";
