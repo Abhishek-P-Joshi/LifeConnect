@@ -76,7 +76,7 @@ public class Patient_Main extends Fragment {
             strAppointment = patient.getString("appointment");
             appointments.setText(strAppointment);
             strSteps = patient.getString("steps");
-            metersMoved.setText(strSteps);
+            metersMoved.setText(strSteps + " Meters");
             strCalories = patient.getString("calories");
             calories.setText(strCalories);
         }
@@ -115,10 +115,10 @@ public class Patient_Main extends Fragment {
             }
         }catch (SQLException e){
         }
-        totalDis = Float.parseFloat(strSteps) + totalDis;
-        totalCal = Float.parseFloat(strCalories) +totalCal;
-        metersMoved.setText(totalDis+" Meters");
-        calories.setText(totalCal+"");
+        //totalDis = Float.parseFloat(strSteps) + totalDis;
+        //totalCal = Float.parseFloat(strCalories) +totalCal;
+        //metersMoved.setText(totalDis+" Meters");
+        //calories.setText(totalCal+"");
 
 
         /*sql = "SELECT appointment FROM Patients\n" + "WHERE Email='"+username+"';";

@@ -131,6 +131,13 @@ public class RegisterActivity extends LoginActivity implements AdapterView.OnIte
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent in = new Intent(this, LoginActivity.class);
+        startActivity(in);
+    }
+
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
         strSelectedDr = (String) parent.getItemAtPosition(pos);
@@ -200,4 +207,6 @@ public class RegisterActivity extends LoginActivity implements AdapterView.OnIte
         dateView.setText(new StringBuilder().append(day).append("/")
                 .append(month).append("/").append(year));
     }
+
+
 }
