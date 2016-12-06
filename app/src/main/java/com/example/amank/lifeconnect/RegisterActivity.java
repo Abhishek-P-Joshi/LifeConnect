@@ -118,15 +118,18 @@ public class RegisterActivity extends LoginActivity implements AdapterView.OnIte
 
                     String sql_update = "UPDATE Doctors SET Patients=concat(Patients,'"+strName+",') WHERE Name='"+strSelectedDr+"'";
                     insertIntoDatabase.insert(sql_update);
+
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    startActivity(intent);
                 }
                 else
                 {
                     sql = "INSERT INTO Doctors (Name, Email, Password, DOB, Contact, Gender) values ('"+strName+"','"+strEmail+"','"+strPassword+"','"+strDOB+"','"+strContact+"','"+strGender+"')";
-                }
-                insertIntoDatabase.insert(sql);
+                    insertIntoDatabase.insert(sql);
 
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                startActivity(intent);
+                    Intent intent = new Intent(RegisterActivity.this, CaptureRegistration.class);
+                    startActivity(intent);
+                }
             }
         });
     }
