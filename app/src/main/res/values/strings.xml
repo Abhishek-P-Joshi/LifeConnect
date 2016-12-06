@@ -4,5 +4,11 @@
     <string name="title_activity_patient__dashboard">Patient_Dashboard</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_demo_insert">DemoInsert</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="fresh_config">Fresh Config</string>
+    <string name="cause_crash">Cause Crash</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="invite_menu_label">Invite</string>
     <string name="title_activity_demo_get">DemoGet</string>
 </resources>
