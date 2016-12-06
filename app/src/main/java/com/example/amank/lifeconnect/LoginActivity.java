@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                     //flag = true;
                     //Intent intent = new Intent(this, DemoInsert.class);
                     //startActivity(intent);
-                    Intent intent = new Intent(this, SelectPatient.class);
+                    Intent intent = new Intent(this, CaptureLogin.class);
                     Bundle bu = new Bundle();
                     bu.putString("email", username);
                     intent.putExtras(bu);
