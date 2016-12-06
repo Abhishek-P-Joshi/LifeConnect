@@ -80,7 +80,7 @@ public class Patient_Main extends Fragment {
             strCalories = patient.getString("calories");
             calories.setText(strCalories);
             strHeartbeat = patient.getString("heartbeat");
-            heartbeat.setText(strHeartbeat + " bpm");
+            heartbeat.setText(strHeartbeat + "bpm");
 
         }
         catch (JSONException e) {
