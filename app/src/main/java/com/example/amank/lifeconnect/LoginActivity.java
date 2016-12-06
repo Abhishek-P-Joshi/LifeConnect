@@ -55,7 +55,8 @@ public class LoginActivity extends AppCompatActivity {
         btnsignup = (Button) findViewById(R.id.btn_signup);
         ActivityCompat.requestPermissions(this, new String[] {
                 Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION },1);
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.CAMERA},1);
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
