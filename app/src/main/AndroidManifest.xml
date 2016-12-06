@@ -25,6 +25,10 @@
         <activity android:name=".RegisterActivity"/>
         <activity android:name=".DoctorDashboard"/>
         <activity android:name=".SelectPatient"/>
+        <activity android:name=".CaptureLogin"/>
+        <activity android:name=".CaptureRegistration"/>
+        <activity android:name=".UploadLogin"/>
+        <activity android:name=".UploadRegistration"/>
         <activity
             android:name=".Patient_Dashboard"
             android:label="@string/title_activity_patient__dashboard"
