@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "343421767374",
+    "firebase_url": "https://friendlychat-d2e84.firebaseio.com",
+    "project_id": "friendlychat-d2e84",
+    "storage_bucket": "friendlychat-d2e84.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343421767374:android:b5d75907de594a2d",
+        "android_client_info": {
+          "package_name": "com.google.firebase.codelab.friendlychat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "343421767374-9vhea8qq79oi09ve3nrdop5omkrhf9g4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.google.firebase.codelab.friendlychat",
+            "certificate_hash": "713AA86F04A498A99CF15351001C34BD92A2664C"
+          }
+        },
+        {
+          "client_id": "343421767374-atld1edm7b6lacuns2496g77eloimotr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBATVxrpIvJa4Y4e25eMoepkL-mwGZOqdQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "343421767374-atld1edm7b6lacuns2496g77eloimotr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343421767374:android:e22dbfcd04bcc1b7",
+        "android_client_info": {
+          "package_name": "com.example.amank.lifeconnect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "343421767374-h8pe2i58s8n0vsf4k8k72b87v0ijn6po.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.amank.lifeconnect",
+            "certificate_hash": "713AA86F04A498A99CF15351001C34BD92A2664C"
+          }
+        },
+        {
+          "client_id": "343421767374-atld1edm7b6lacuns2496g77eloimotr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBATVxrpIvJa4Y4e25eMoepkL-mwGZOqdQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "343421767374-atld1edm7b6lacuns2496g77eloimotr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
