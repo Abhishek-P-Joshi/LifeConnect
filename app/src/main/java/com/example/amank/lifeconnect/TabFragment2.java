@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,7 +49,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
 
-public class TabFragment2 extends Fragment implements GoogleApiClient.OnConnectionFailedListener  {
+public class TabFragment2 extends android.support.v4.app.Fragment implements GoogleApiClient.OnConnectionFailedListener{
+    public static TabFragment2 newInstance() {
+        TabFragment2 fragment = new TabFragment2();
+        return fragment;
+    }
+
+
     private String strPatientName, strDoctorName;
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
@@ -65,6 +70,7 @@ public class TabFragment2 extends Fragment implements GoogleApiClient.OnConnecti
             messengerImageView = (CircleImageView) itemView.findViewById(R.id.messengerImageView);
         }
     }
+
     private static final String TAG = "MainActivity";
     public static final String MESSAGES_CHILD = "messages";
     private static final int REQUEST_INVITE = 1;
@@ -86,7 +92,7 @@ public class TabFragment2 extends Fragment implements GoogleApiClient.OnConnecti
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mFirebaseDatabaseReference;
-    private FirebaseRecyclerAdapter<FriendlyMessage, Patient_Chat.MessageViewHolder>
+    private FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder>
             mFirebaseAdapter;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
@@ -124,17 +130,17 @@ public class TabFragment2 extends Fragment implements GoogleApiClient.OnConnecti
                 .addApi(Auth.GOOGLE_SIGN_IN_API)
                 .build();
 
-        // Initialize ProgressBar and RecyclerView.
+//        // Initialize ProgressBar and RecyclerView.
         mProgressBar = (ProgressBar) v.findViewById(R.id.progressBar);
-
-
+//
+//
         mMessageRecyclerView = (RecyclerView) v.findViewById(R.id.messageRecyclerView);
         mLinearLayoutManager = new LinearLayoutManager(getContext());
         mLinearLayoutManager.setStackFromEnd(true);
         mMessageRecyclerView.setLayoutManager(mLinearLayoutManager);
-
-        //mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-
+//
+//        //mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+//
         // Initialize Firebase Remote Config.
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
 
@@ -159,14 +165,14 @@ public class TabFragment2 extends Fragment implements GoogleApiClient.OnConnecti
         // New child entries
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
         mFirebaseAdapter = new FirebaseRecyclerAdapter<FriendlyMessage,
-                Patient_Chat.MessageViewHolder>(
+                MessageViewHolder>(
                 FriendlyMessage.class,
                 R.layout.item_message,
-                Patient_Chat.MessageViewHolder.class,
+                MessageViewHolder.class,
                 mFirebaseDatabaseReference.child(MESSAGES_CHILD)) {
 
             @Override
-            protected void populateViewHolder(Patient_Chat.MessageViewHolder viewHolder,
+            protected void populateViewHolder(MessageViewHolder viewHolder,
                                               FriendlyMessage friendlyMessage, int position) {
                 mProgressBar.setVisibility(ProgressBar.INVISIBLE);
                 viewHolder.messageTextView.setText(friendlyMessage.getText());
@@ -201,7 +207,7 @@ public class TabFragment2 extends Fragment implements GoogleApiClient.OnConnecti
                 }
             }
         });
-
+//
         mMessageRecyclerView.setLayoutManager(mLinearLayoutManager);
         mMessageRecyclerView.setAdapter(mFirebaseAdapter);
 
@@ -276,7 +282,7 @@ public class TabFragment2 extends Fragment implements GoogleApiClient.OnConnecti
                     }
                 });
     }
-
+//
     /**
      * Apply retrieved length limit to edit text field.
      * This result may be fresh from the server or it may be from cached
